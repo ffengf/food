@@ -20,3 +20,8 @@ export enum user_level {
 	root = 1,
 	admin = 0,
 }
+
+export interface parmas {
+	page: number | string
+	page_size: number | string
+}

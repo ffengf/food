@@ -24,7 +24,7 @@ interface mutation_login {
 export default class User extends VuexModule {
 	private TOKEN: string | null = StorageDb.getLocal('token')
 	private USERNAME: string | null = StorageDb.getLocal('username')
-	private AUTH: string | null = StorageDb.getLocal('auth')
+	private AUTH: number | null = StorageDb.getLocal('auth')
 	private ID: Id | null = StorageDb.getLocal('id')
 
 	@Mutation
@@ -37,7 +37,7 @@ export default class User extends VuexModule {
 	@Mutation
 	private LOGOUT() {
 		this.USERNAME = ''
-		this.AUTH = ''
+		this.AUTH = null
 		this.TOKEN = null
 		this.ID = ''
 	}
@@ -46,9 +46,10 @@ export default class User extends VuexModule {
 	public async login(info: login) {
 		const { username, token, id, auth } = await api_login.login(info)
 		StorageDb.setLocal('username', username)
-		StorageDb.setLocal('auth', auth)
+		StorageDb.setLocal('auth', Number(auth))
 		StorageDb.setLocal('token', token)
 		StorageDb.setLocal('id', id)
+		console.log(auth)
 		this.LOGIN({ username, auth, token, id })
 	}
 
@@ -69,6 +70,15 @@ export default class User extends VuexModule {
 		return this.ID
 	}
 
+	public get user_level(){
+		return this.AUTH
+	}
+
+	public get user_info(){
+		return {
+			username:this.USERNAME
+		}
+	}
 }
 
 

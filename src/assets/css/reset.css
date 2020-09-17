@@ -313,6 +313,10 @@ button {
   padding-top: 20px;
 }
 
+.pd20{
+	padding: 20px;
+}
+
 .pagin {
   padding: 10px 0;
   text-align: right;

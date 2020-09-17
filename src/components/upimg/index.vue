@@ -114,7 +114,7 @@ export default class extends Vue {
     }
 
     get api() {
-        return process.env.VUE_UPLOAD_API;
+        return process.env.VUE_APP_UPLOAD;
     }
 
     beforeUpload(file: ElUploadInternalRawFile) {

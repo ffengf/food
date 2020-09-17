@@ -2,6 +2,6 @@
 
 import { filter } from "ramda";
 
-export const clean = (data: Record<string,string | number>)=>{
-	return filter(x => x !== "",data)
+export const clean = (data: Record<string, string | number>): any => {
+	return filter(x => x !== "", data)
 }

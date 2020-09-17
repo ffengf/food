@@ -23,11 +23,14 @@ server.interceptors.request.use(config => {
 	loadding.hideLoading()
 	return Promise.reject(err);
 })
-server.interceptors.response.use(({ data }) => {
+server.interceptors.response.use(({ data,status }) => {
 	loadding.hideLoading()
 	if (data.code) {
 		Vue.$message.error(data.msg)
 		return Promise.reject(data)
+	}
+	if(status === 204){
+		Vue.$message.success('删除成功')
 	}
 	return data
 }, err => {
@@ -52,9 +55,9 @@ interface has_id {
 	id: Id
 }
 
-export interface list<T>{
-	count:number
-	results:T[]
+export interface list<T> {
+	count: number
+	results: T[]
 }
 
 export abstract class Http_list<T extends has_id> {
@@ -81,23 +84,30 @@ export abstract class Http_list<T extends has_id> {
 		return this.server.put(`${this.uri}${id}/`, data)
 	}
 
+	protected patch<G extends has_id>({ id, ...data }: G) {
+		return this.server.patch(`${this.uri}${id}`, data)
+	}
+
 	protected put_many(id_list: T[], type: unknown) {
 		const updateid = id_list.map(x => x.id)
 		return this.server.put(`${this.uri}multiple_put/`, { updateid, type })
 	}
 
-	protected delete(id: Id | Id[]) {
+	protected async delete(id: Id | Id[],type = true) {
+		if(type){
+			await Vue.$confirm('是否删除?')
+		}
 		const deleteid = Array.isArray(id) ? id.join(',') : id
-		return this.server.delete(`${this.uri}multiple_delete/?deleteid=${deleteid}`)
+		return this.server.delete(`${this.uri}?id=${deleteid}`)
 	}
 
-	protected delete_one(id:Id){
+	protected delete_one(id: Id) {
 		return this.server.delete(`${this.uri}${id}/`)
 	}
 }
 
 
-export abstract class Http{
+export abstract class Http {
 	protected readonly uri: string
 	protected readonly server: AxiosInstance = server;
 
@@ -105,15 +115,15 @@ export abstract class Http{
 		this.uri = uri
 	}
 
-	protected post(data:any):Promise<any>{
+	protected post(data: any): Promise<any> {
 		return this.server.post(this.uri, data)
 	}
 
-	protected get(params?: any):Promise<any> {
+	protected get(params?: any): Promise<any> {
 		return this.server.get(this.uri, { params })
 	}
 
-	protected delete_one(id:Id){
+	protected delete_one(id: Id) {
 		return this.server.delete(`${this.uri}${id}/`)
 	}
 }

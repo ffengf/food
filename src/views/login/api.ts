@@ -18,7 +18,6 @@ export interface login_info {
 }
 
 class HttpLogin extends Http{
-
 	login(info:login):Promise<login_info>{
 		return this.post(info)
 	}

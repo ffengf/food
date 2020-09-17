@@ -3,7 +3,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { clean } from '@/util/object';
 import { list } from '@/http/base';
-
+import { parmas } from "@/types/global"
 
 
 interface Id {
@@ -11,7 +11,7 @@ interface Id {
 }
 
 
-type axios_get<T> = (filter: Object) => Promise<list<T>>
+type axios_get<T> = <G extends parmas>(filter:G) => Promise<list<T>>
 
 
 export const Mixin_list = <T extends Id>(axios_get: axios_get<T>) => {
@@ -43,16 +43,16 @@ export const Mixin_list = <T extends Id>(axios_get: axios_get<T>) => {
 			return this.selete.map(x => x.id)
 		}
 
-		@Watch('page')
-		watch_page() {
-			this.get_list()
+		find(){
+			if(this.page === 1){
+				this.get_list()
+			}else{
+				this.page = 1
+			}
 		}
 
 		@Watch('page_size')
-		watch_page_size() {
-			this.get_list()
-		}
-
+		@Watch('page')
 		async get_list() {
 			const { page, page_size, ordering } = this
 			const data = clean({ page, ordering, page_size, ...this.filter })

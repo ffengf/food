@@ -28,9 +28,10 @@ export default class User extends VuexModule {
 	private ID: Id | null = StorageDb.getLocal('id')
 
 	@Mutation
-	private LOGIN({ username, token, id }: mutation_login) {
+	private LOGIN({ username, token, id, auth }: mutation_login) {
 		this.USERNAME = username
 		this.TOKEN = token
+		this.AUTH = auth
 		this.ID = id
 	}
 
@@ -49,7 +50,6 @@ export default class User extends VuexModule {
 		StorageDb.setLocal('auth', Number(auth))
 		StorageDb.setLocal('token', token)
 		StorageDb.setLocal('id', id)
-		console.log(auth)
 		this.LOGIN({ username, auth, token, id })
 	}
 

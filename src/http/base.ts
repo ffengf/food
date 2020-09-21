@@ -23,13 +23,13 @@ server.interceptors.request.use(config => {
 	loadding.hideLoading()
 	return Promise.reject(err);
 })
-server.interceptors.response.use(({ data,status }) => {
+server.interceptors.response.use(({ data, status }) => {
 	loadding.hideLoading()
 	if (data.code) {
 		Vue.$message.error(data.msg)
 		return Promise.reject(data)
 	}
-	if(status === 204){
+	if (status === 204) {
 		Vue.$message.success('删除成功')
 	}
 	return data
@@ -51,7 +51,7 @@ server.interceptors.response.use(({ data,status }) => {
 
 
 
-interface has_id {
+export interface has_id {
 	id: Id
 }
 
@@ -73,35 +73,39 @@ export abstract class Http_list<T extends has_id> {
 	}
 
 	protected get_one<R>(id: Id): Promise<R> {
-		return this.server.get(`${this.uri}${id}`)
+		return this.server.get(`${this.uri}${id}/`)
 	}
 
-	protected post<T>(data: T) {
+	protected post<T>(data: T): Promise<unknown> {
 		return this.server.post(this.uri, data)
 	}
 
-	protected put_one({ id, ...data }: T) {
+	protected put_one({ id, ...data }: T): Promise<unknown> {
 		return this.server.put(`${this.uri}${id}/`, data)
 	}
 
 	protected patch<G extends has_id>({ id, ...data }: G) {
-		return this.server.patch(`${this.uri}${id}`, data)
+		return this.server.patch(`${this.uri}${id}/`, data)
 	}
 
-	protected put_many(id_list: T[], type: unknown) {
+	protected patch_many(data: any): Promise<unknown> {
+		return this.server.patch(`${this.uri}multiple_put/`, data)
+	}
+
+	protected put_many(id_list: T[], type: unknown): Promise<unknown> {
 		const updateid = id_list.map(x => x.id)
 		return this.server.put(`${this.uri}multiple_put/`, { updateid, type })
 	}
 
-	protected async delete(id: Id | Id[],type = true) {
-		if(type){
+	protected async delete(id: Id | Id[], type = true): Promise<unknown> {
+		if (type) {
 			await Vue.$confirm('是否删除?')
 		}
 		const deleteid = Array.isArray(id) ? id.join(',') : id
 		return this.server.delete(`${this.uri}?id=${deleteid}`)
 	}
 
-	protected delete_one(id: Id) {
+	protected delete_one(id: Id): Promise<unknown> {
 		return this.server.delete(`${this.uri}${id}/`)
 	}
 }
@@ -123,7 +127,7 @@ export abstract class Http {
 		return this.server.get(this.uri, { params })
 	}
 
-	protected delete_one(id: Id) {
+	protected delete_one(id: Id): Promise<unknown> {
 		return this.server.delete(`${this.uri}${id}/`)
 	}
 }

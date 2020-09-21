@@ -80,18 +80,52 @@ const routes: RouteConfig[] = [
 					{
 						path: 'goods',
 						meta: {
-							title: '商品管理',
+							title: '菜品管理',
 							cache: false
 						},
-						component: () => import('@/views/shop/goods/index.vue'),
+						component: Rview,
+						children:[
+							{
+								path:'',
+								meta:{
+									title: '菜品列表',
+									cache: false
+								},
+								component: () => import('@/views/shop/goods/index.vue'),
+							},
+							{
+								path: 'create',
+								meta:{
+									title: '添加菜品',
+									cache: false
+								},
+								component: () => import('@/views/shop/goods/edit/index.vue'),
+							},
+							{
+								path: 'edit/:id',
+								meta:{
+									title: '编辑菜品',
+									cache: false
+								},
+								component: () => import('@/views/shop/goods/edit/index.vue'),
+							}
+						]
 					},
 					{
 						path: 'class',
 						meta: {
-							title: '分类管理',
+							title: '商品分类管理',
 							cache: false
 						},
 						component: () => import('@/views/shop/class/index.vue'),
+					},
+					{
+						path: 'vclass',
+						meta: {
+							title: '套餐分类管理',
+							cache: false
+						},
+						component: () => import('@/views/shop/vclass/index.vue'),
 					},
 					{
 						path: 'package',

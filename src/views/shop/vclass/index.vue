@@ -20,8 +20,11 @@
             >
                 <el-table-column label="Id" prop="id"></el-table-column>
                 <el-table-column label="分类名称" prop="name"></el-table-column>
-                <el-table-column label="排序值" prop="order"></el-table-column>
-                <el-table-column label="商品数量" prop="food_num"></el-table-column>
+                <el-table-column label="分类图片">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.img" alt style="width: 80px" />
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="255" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="edit(scope.row)" type="primary">
@@ -35,17 +38,13 @@
             </el-table>
             <Page :total="total" :page.sync="page" :page_size.sync="page_size" />
         </div>
-		<el-dialog
-            title="分类"
-            :visible.sync="key"
-            width="50%"
-        >
+        <el-dialog title="分类" :visible.sync="key" width="50%">
             <el-form ref="form" label-width="100px" class="demo-ruleForm" :model="info">
                 <el-form-item label="分类名称">
                     <el-input v-model="info.name" placeholder="请输入分类名称" size="medium"></el-input>
                 </el-form-item>
-				<el-form-item label="排序值">
-                    <el-input v-model="info.order" placeholder="请输入排序值" size="medium" type="number"></el-input>
+                <el-form-item label="分类图片">
+                    <Upimg :limitMax="1" v-model="info.img" />
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -57,15 +56,17 @@
 
 <script lang='ts'>
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { api_class, change_pass, goods_class, create_goods_class } from "@/views/shop/api";
+import { api_vclass, create_vclass, vclass } from "@/views/shop/api";
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
+import Upimg from "@/components/upimg/index.vue";
 import { Id, isCreate } from "@/types/global";
-const Base = Mixin_list<goods_class>(api_class.get_list);
+const Base = Mixin_list<vclass>(api_vclass.get_list);
 
 @Component({
     components: {
         Page,
+        Upimg,
     },
 })
 export default class extends Base {
@@ -73,41 +74,40 @@ export default class extends Base {
         search: "",
     };
 
-    info: create_goods_class | goods_class = {
+    info: vclass | create_vclass = {
         name: "",
-        order: 0,
-	};
+        img: "",
+    };
 
-	key = false
+    key = false;
 
-	create(){
-		this.key = true
-		this.info = {
-			name:"",
-			order:0
-		}
-	}
+    create() {
+        this.key = true;
+        this.info = {
+            name: "",
+            img: "",
+        };
+    }
 
-    edit(info:goods_class) {
-		this.info = {...info}
-		this.key = true
-
-	}
+    edit(info: vclass) {
+        this.info = { ...info };
+        this.key = true;
+    }
 
     async submit() {
-		if(isCreate(this.info)){
-			await api_class.create(this.info as create_goods_class);
-        	this.$message.success("添加成功");
-		}else{
-			await api_class.edit(this.info as goods_class);
-        	this.$message.success("修改成功");
-		}
-		this.key = false
+        if (isCreate(this.info)) {
+            await api_vclass.create(this.info as create_vclass);
+            this.$message.success("添加成功");
+        } else {
+            await api_vclass.edit(this.info as vclass);
+            this.$message.success("修改成功");
+        }
+        this.key = false;
         this.get_list();
     }
 
     async remove(id: Id) {
-        await api_class.remove(id);
+        await api_vclass.remove(id);
         this.get_list();
     }
 }

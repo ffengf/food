@@ -40,7 +40,7 @@
                         <el-button
                             size="mini"
                             type="info"
-                            @click="$router.push(`/operating/vip_info?id=${scope.row.id}`)"
+                            @click="new_password(scope.row.id)"
                         >重置密码</el-button>
                         <el-button size="mini" @click="remove(scope.row.id)" type="warning">
                             <i class="el-icon-delete"></i>
@@ -50,12 +50,23 @@
             </el-table>
             <Page :total="total" :page.sync="page" :page_size.sync="page_size" />
         </div>
+		<el-dialog title="请输入密码" :visible.sync="key">
+            <el-form :rules="rules" ref="form" :model="info">
+                <el-form-item label="新密码" prop="password">
+                    <el-input size="medium" v-model="info.password" placeholder="请输入"></el-input>
+                </el-form-item>
+            </el-form>
+			<span slot="footer" class="dialog-footer">
+                <el-button size="medium" @click="key = false">退出编辑</el-button>
+				<el-button type="primary" size="medium" @click="submit">确定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script lang='ts'>
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { api_store, store } from "@/views/shop/api";
+import { api_store, store, change_pass } from "@/views/shop/api";
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
 import { Id } from "@/types/global";
@@ -69,7 +80,32 @@ const Base = Mixin_list<store>(api_store.get_stores_list);
 export default class extends Base {
     filter = {
         search: "",
-    };
+	};
+
+	key = false
+
+	info:change_pass = {
+		id:'',
+		password:''
+	}
+	rules = {
+		password: [{required: true,message: "请输入"}],
+	}
+
+	new_password(id:Id){
+		this.key = true
+		this.info = {
+			id,
+			password:""
+		}
+	}
+
+	async submit(){
+		await (this.$refs["form"] as any).validate();
+		await api_store.change_password(this.info)
+		this.$message.success('修改成功')
+		this.get_list()
+	}
 
     async remove(id: Id) {
         await api_store.remove(id);

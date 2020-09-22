@@ -28,7 +28,7 @@
                 <el-table-column label="分类" prop="food_category"></el-table-column>
                 <el-table-column label="销量" prop="goods_sale"></el-table-column>
                 <el-table-column label="所属店铺名称" prop="food_store"></el-table-column>
-                <el-table-column label="加入时间" prop="create_time" width="175"></el-table-column>
+                <el-table-column label="加入时间" prop="create_time" width="235"></el-table-column>
                 <el-table-column label="是否上架" class="is_upper">
                     <template slot-scope="scope">
                         <span class="green" v-if="scope.row.is_upper === true">
@@ -55,18 +55,17 @@
                             @click="change_is_upper([scope.row.id],false)"
                             type="danger"
                         >下架</el-button>
-                        <el-button
-                            size="mini"
-                            @click="edit(scope.row.id)"
-                            type="primary"
-                        >
-                            <i class="el-icon-edit-outline"></i>
-                        </el-button>
-                        <el-button
-                            size="mini"
-                            @click="remove(scope.row.id)"
-                            type="warning"
-                        >
+                        <el-dropdown trigger="click" @command="edit(scope.row.id,$event)">
+                            <el-button size="mini" type="primary">
+                                <i class="el-icon-edit-outline"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="edit_base">编辑基本信息</el-dropdown-item>
+                                <el-dropdown-item command="edit_class">编辑商品规格</el-dropdown-item>
+                                <el-dropdown-item command="edit_money">编辑商品价格</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <el-button size="mini" @click="remove(scope.row.id)" type="warning">
                             <i class="el-icon-delete"></i>
                         </el-button>
                     </template>
@@ -95,20 +94,27 @@ export default class extends Base {
         search: "",
     };
 
-	async change_is_upper(id:Id[],is_upper:boolean){
-		await api_goods.change_is_supper({ id,is_upper })
-		this.$message.success('修改成功')
-		this.get_list()
-	}
+    async change_is_upper(id: Id[], is_upper: boolean) {
+        await api_goods.change_is_supper({ id, is_upper });
+        this.$message.success("修改成功");
+        this.get_list();
+    }
 
     async remove(id: Id) {
         await api_goods.remove(id);
         this.get_list();
-	}
+    }
 
-	edit(id:Id){
-		this.$router.push(`/shop/goods/edit/${id}`)
-	}
+    edit(id: Id, type: string) {
+        switch (type) {
+            case "edit_base":
+                return this.$router.push(`/shop/goods/edit/${id}?init=0`);
+            case "edit_class":
+                return this.$router.push(`/shop/goods/edit/${id}?init=1`);
+            case "edit_money":
+                return this.$router.push(`/shop/goods/edit/${id}?init=2`);
+        }
+    }
 }
 </script>
 

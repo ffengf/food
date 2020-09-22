@@ -23,8 +23,8 @@ export enum user_level {
 }
 
 export interface parmas {
-	page: number | string
-	page_size: number | string
+	page?: number | string
+	page_size?: number | string
 }
 
 export function isCreate<T extends has_id>(data:T | any):data is has_id{

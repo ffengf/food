@@ -58,15 +58,14 @@ export default {
 			tab_index:''
         };
 	},
-	props:['info'],
+	props:['information'],
     methods: {
-        step_submit(type) {
-			const isSubmit = type === 1
-			const information = {
-				...this.info,
+        step_submit(go) {
+			const info = {
+				...this.information,
 				specification:this.data
 			}
-            this.$emit("step_submit", { information, type, isSubmit });
+            this.$emit("submit", { info, go, step:1 });
         },
         del_class(key) {
 			this.data = dissoc(key, this.data);
@@ -103,7 +102,7 @@ export default {
 		}
 	},
 	created(){
-		const {specification} = this.info
+		const {specification} = this.information
 		this.index = Object.keys(specification)
 		this.data = specification
 		this.tab_index = this.index[0]

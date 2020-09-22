@@ -40,7 +40,7 @@ const routes: RouteConfig[] = [
 					title: '商品管理',
 					cache: false
 				},
-				redirect: '/shop/goods',
+				redirect: '/shop/remark',
 				component: () => import('@/views/shop/index.vue'),
 				children: [
 					{

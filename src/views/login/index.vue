@@ -3,7 +3,7 @@
         <div class="login">
             <h4>觅品美食圈</h4>
             <div class="loginDiv">
-                <el-form :model="info" :rules="rules" ref="adminForm">
+                <el-form :model="info" :rules="rules" ref="form">
                     <el-form-item prop="username">
                         <el-input
                             placeholder="请输入账号"
@@ -56,7 +56,7 @@ export default class extends Vue {
         password: "admin123",
     };
     async submit() {
-        await (this.$refs["adminForm"] as ElForm | undefined)?.validate();
+        await (this.$refs["form"] as ElForm | undefined)?.validate();
         await UserModule.login(this.info);
         this.$router.push("/");
     }

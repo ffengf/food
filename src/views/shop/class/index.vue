@@ -40,7 +40,7 @@
             :visible.sync="key"
             width="50%"
         >
-            <el-form ref="form" label-width="100px" class="demo-ruleForm" :model="info">
+            <el-form ref="form" label-width="100px" class="demo-ruleForm" :rules="rules" :model="info">
                 <el-form-item label="分类名称">
                     <el-input v-model="info.name" placeholder="请输入分类名称" size="medium"></el-input>
                 </el-form-item>
@@ -61,6 +61,7 @@ import { api_class, change_pass, goods_class, create_goods_class } from "@/views
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
 import { Id, isCreate } from "@/types/global";
+import { ElForm } from 'element-ui/types/form';
 const Base = Mixin_list<goods_class>(api_class.get_list);
 
 @Component({
@@ -80,6 +81,11 @@ export default class extends Base {
 
 	key = false
 
+	rules = {
+		name:[{required: true,message: "请输入"}],
+		order:[{required: true,message: "请输入"}],
+	}
+
 	create(){
 		this.key = true
 		this.info = {
@@ -95,6 +101,7 @@ export default class extends Base {
 	}
 
     async submit() {
+		await (this.$refs["form"] as ElForm | undefined)?.validate();
 		if(isCreate(this.info)){
 			await api_class.create(this.info as create_goods_class);
         	this.$message.success("添加成功");

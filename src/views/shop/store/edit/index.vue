@@ -104,7 +104,23 @@ export default class extends Vue {
         auth: 0,
         is_register: 0,
     };
-    rules = {};
+    rules = {
+		name: [{required: true,message: "请输入"}],
+        image: [{required: true,message: "请输入"}],
+        video: [{required: true,message: "请输入"}],
+        phone: [{required: true,message: "请输入"}],
+        address: [{required: true,message: "请输入"}],
+        longitude: [{required: true,message: "请输入"}],
+        latitude: [{required: true,message: "请输入"}],
+        start_time: [{required: true,message: "请输入"}],
+        end_time: [{required: true,message: "请输入"}],
+        per_cost: [{required: true,message: "请输入"}],
+        m_value: [{required: true,message: "请输入"}],
+        username: [{required: true,message: "请输入"}],
+        password: [{required: true,message: "请输入"}],
+        auth: [{required: true,message: "请输入"}],
+        is_register: [{required: true,message: "请输入"}],
+	};
     key = false;
 
     get id() {

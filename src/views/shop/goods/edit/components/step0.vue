@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-form label-width="160px" :rules="rules" ref="form" :model="info">
-            <el-form-item label="店铺名称" prop="name">
+            <el-form-item label="名称" prop="name">
                 <el-input size="medium" v-model="info.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="关键词" prop="key_word">
@@ -47,6 +47,7 @@ import { api_class, goods_class, create_spu } from "@/views/shop/api";
 import Upimg from "@/components/upimg/index.vue";
 import { merge } from "ramda";
 import { Id } from "@/types/global";
+import { ElForm } from 'element-ui/types/form';
 
 interface info {
     name: string;
@@ -75,10 +76,19 @@ export default class extends Vue {
         img_list: [],
         goods_desc: "",
     };
-    rules = {};
+    rules = {
+		name:[{required: true,message: "请输入"}],
+		key_word: [{required: true,message: "请输入"}],
+        is_real_seal: [{required: true,message: "请输入"}],
+        food_category_id: [{required: true,message: "请输入"}],
+        goods_sale: [{required: true,message: "请输入"}],
+        img_list: [{required: true,message: "请输入"}],
+        goods_desc: [{required: true,message: "请输入"}],
+	};
     class_list: goods_class[] = [];
     @Emit("submit")
-    submit() {
+    async submit() {
+		await (this.$refs["form"] as ElForm | undefined)?.validate();
         return {
             info: this.info,
             step: 0,

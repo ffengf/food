@@ -88,6 +88,7 @@ import {
 } from "@/views/shop/api";
 import { aggregate } from "@/util/array";
 import { equals, compose, map, sort } from "ramda";
+import { ElForm } from 'element-ui/types/form';
 @Component({
     components: {
         Upimg,
@@ -114,7 +115,14 @@ export default class extends Vue {
         option_id_list: [],
     };
 
-    rules = {};
+    rules = {
+		spu_id: [{required: true,message: "请输入"}],
+        stock: [{required: true,message: "请输入"}],
+        points: [{required: true,message: "请输入"}],
+        VIP_1_price: [{required: true,message: "请输入"}],
+        img: [{required: true,message: "请输入"}],
+        option_id_list: [{required: true,message: "请输入"}],
+	};
 
     async get_info() {
         const [{ specification_list }, { results }] = await Promise.all([
@@ -180,6 +188,7 @@ export default class extends Vue {
     }
 
     async submit() {
+		await (this.$refs["form"] as ElForm | undefined)?.validate();
         if (this.info.option_id_list !== undefined) {
             await api_goods.create_sku(this.info as create_sku);
             this.$message.success("添加成功");

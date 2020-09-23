@@ -1,6 +1,6 @@
 <template>
 	<div>
-		hello wolrd
+		觅品圈
 	</div>
 </template>
 

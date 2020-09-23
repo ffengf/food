@@ -277,21 +277,54 @@ export interface package_list extends base_package {
 	id:Id
 }
 
+export interface create_package {
+	goods_desc:string
+	name: string
+	key_word: string
+	price:number
+	is_real_seal: boolean
+	goods_sale: number
+	img_list: string[]
+	video:string
+	img_detail:string[]
+	food_store_id: Id
+	combo_category_id: Id
+	combo_content:string
+	points:number
+	stock:number
+}
+
+export interface put_package extends create_package {
+	id:Id
+}
+
 class HttpPackage extends Http_list<package_list> {
 	get_list = <T extends parmas>(parmas: T) => {
 		return this.get<package_list>(parmas)
+	}
+
+	get_info(id:Id):Promise<put_package>{
+		return this.get_one(id)
 	}
 
 	change_upper(data:{ id:Id[],is_upper:boolean }){
 		return this.patch_many(data)
 	}
 
-	remove(id:Id[]){
+	remove(id:Id[] | Id){
 		return this.delete(id)
 	}
 
 	change_hot(data:{ id:Id,is_homepage_hot:boolean }){
 		return this.patch(data)
+	}
+
+	create(data:create_package){
+		this.post(data)
+	}
+
+	edit(data:put_package){
+		this.put_one(data as any)
 	}
 }
 

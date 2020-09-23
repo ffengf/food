@@ -2,6 +2,8 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Rview from "@/components/routerView/index.vue"
+import { UserModule } from '@/model/user';
+import { user_level } from '@/types/global';
 
 //跳转相同路由报错
 const originalPush = VueRouter.prototype.push
@@ -35,12 +37,60 @@ const routes: RouteConfig[] = [
 				component: () => import('@/views/home/index.vue')
 			},
 			{
+				path: 'order',
+				meta: {
+					title: '用户订单',
+					cache: false
+				},
+				redirect: '/order/manage',
+				component: () => import('@/views/order/index.vue'),
+				children: [
+					{
+						path:'manage',
+						meta: {
+							title: '订单管理',
+							cache: false
+						},
+						component: Rview,
+						children:[
+							{
+								path:'',
+								meta: {
+									title: '订单列表',
+									cache: false
+								},
+								component: () => import('@/views/order/manage/index.vue'),
+							},
+							{
+								path:'info/:order_id',
+								meta: {
+									title: '订单详情',
+									cache: false
+								},
+								component: () => import('@/views/order/manage/info/index.vue'),
+							},
+						]
+					}
+				]
+			},
+			{
 				path: 'shop',
 				meta: {
 					title: '商品管理',
 					cache: false
 				},
-				redirect: '/shop/remark',
+				beforeEnter(to,form,next){
+					if(to.path === '/shop'){
+						if(UserModule.user_level === user_level.root){
+							return next('/shop/store')
+						}
+						if(UserModule.user_level === user_level.admin){
+							return next('/shop/goods')
+						}
+					}else{
+						return next()
+					}
+				},
 				component: () => import('@/views/shop/index.vue'),
 				children: [
 					{
@@ -53,7 +103,7 @@ const routes: RouteConfig[] = [
 						children: [
 							{
 								path: '',
-								meta:{
+								meta: {
 									title: '店铺列表',
 									cache: false
 								},
@@ -61,7 +111,7 @@ const routes: RouteConfig[] = [
 							},
 							{
 								path: 'create',
-								meta:{
+								meta: {
 									title: '添加店铺',
 									cache: false
 								},
@@ -69,7 +119,7 @@ const routes: RouteConfig[] = [
 							},
 							{
 								path: 'edit/:id',
-								meta:{
+								meta: {
 									title: '编辑店铺',
 									cache: false
 								},
@@ -84,10 +134,10 @@ const routes: RouteConfig[] = [
 							cache: false
 						},
 						component: Rview,
-						children:[
+						children: [
 							{
-								path:'',
-								meta:{
+								path: '',
+								meta: {
 									title: '菜品列表',
 									cache: false
 								},
@@ -95,7 +145,7 @@ const routes: RouteConfig[] = [
 							},
 							{
 								path: 'create',
-								meta:{
+								meta: {
 									title: '添加菜品',
 									cache: false
 								},
@@ -103,7 +153,7 @@ const routes: RouteConfig[] = [
 							},
 							{
 								path: 'edit/:id',
-								meta:{
+								meta: {
 									title: '编辑菜品',
 									cache: false
 								},
@@ -133,7 +183,33 @@ const routes: RouteConfig[] = [
 							title: '套餐管理',
 							cache: false
 						},
-						component: () => import('@/views/shop/package/index.vue'),
+						component: Rview,
+						children: [
+							{
+								path: '',
+								meta: {
+									title: '套餐列表',
+									cache: false
+								},
+								component: () => import('@/views/shop/package/index.vue'),
+							},
+							{
+								path: 'create',
+								meta: {
+									title: '添加套餐',
+									cache: false
+								},
+								component: () => import('@/views/shop/package/edit/index.vue'),
+							},
+							{
+								path: 'edit/:id',
+								meta: {
+									title: '编辑套餐',
+									cache: false
+								},
+								component: () => import('@/views/shop/package/edit/index.vue'),
+							}
+						]
 					},
 					{
 						path: 'remark',

@@ -39,7 +39,7 @@
             <Page :total="total" :page.sync="page" :page_size.sync="page_size" />
         </div>
         <el-dialog title="分类" :visible.sync="key" width="50%">
-            <el-form ref="form" label-width="100px" class="demo-ruleForm" :model="info">
+            <el-form ref="form" label-width="100px" class="demo-ruleForm" :rules="rules" :model="info">
                 <el-form-item label="分类名称">
                     <el-input v-model="info.name" placeholder="请输入分类名称" size="medium"></el-input>
                 </el-form-item>
@@ -61,6 +61,7 @@ import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
 import Upimg from "@/components/upimg/index.vue";
 import { Id, isCreate } from "@/types/global";
+import { ElForm } from 'element-ui/types/form';
 const Base = Mixin_list<vclass>(api_vclass.get_list);
 
 @Component({
@@ -77,7 +78,12 @@ export default class extends Base {
     info: vclass | create_vclass = {
         name: "",
         img: "",
-    };
+	};
+
+	rules = {
+		name: [{required: true,message: "请输入"}],
+        img: [{required: true,message: "请输入"}],
+	}
 
     key = false;
 
@@ -95,6 +101,7 @@ export default class extends Base {
     }
 
     async submit() {
+		await (this.$refs["form"] as ElForm | undefined)?.validate();
         if (isCreate(this.info)) {
             await api_vclass.create(this.info as create_vclass);
             this.$message.success("添加成功");

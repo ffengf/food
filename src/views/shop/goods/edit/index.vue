@@ -24,7 +24,7 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
 import { create_spu, api_goods } from "@/views/shop/api";
 import PageHeader from "@/components/pageHeader/index.vue";
 import Step0 from "./components/step0.vue";

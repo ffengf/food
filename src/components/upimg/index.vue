@@ -134,7 +134,7 @@ export default class extends Vue {
         return true;
     }
     handleRemove(_: ElUploadInternalFileDetail, fileList: any[]) {
-        const arr = fileList.map((x) => x?.response?.url || x.url);
+		const arr = fileList.map((x) => x?.response?.url || x.url);
         this.change_imgList(arr);
     }
 
@@ -145,6 +145,13 @@ export default class extends Vue {
     }
 
     imgLoadSuccess(res: any, __: any, fileList: any[]) {
+		for(let i = 0;i<fileList.length;i++){
+			if(fileList[i].response){
+			}else if(!fileList[i].url.includes('blob:http')){
+			}else{
+				return
+			}
+		}
         const arr = fileList.map((x) => x?.response?.url || x.url);
         this.change_imgList(arr);
     }

@@ -53,6 +53,7 @@ export const Mixin_list = <T extends Id>(axios_get: axios_get<T>) => {
 
 		@Watch('page_size')
 		@Watch('page')
+		@Watch('ordering')
 		async get_list() {
 			const { page, page_size, ordering } = this
 			const data = clean({ page, ordering, page_size, ...this.filter })

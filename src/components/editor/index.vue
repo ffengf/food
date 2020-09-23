@@ -1,9 +1,7 @@
 
 <template>
     <div id="wangeditor">
-        <div id="div1" class="toolbar"></div>
-        <div style="padding: 5px 0; color: #ccc">从这里编辑内容</div>
-        <div id="edit_text" class="text"></div>
+        <div ref="editor" style="text-align: left;"></div>
     </div>
 </template>
 
@@ -35,16 +33,21 @@ export default class extends Vue {
 
     get value() {
         return this.input;
-    }
+	}
     set value(val) {
         this.change_input(val);
 	}
     get url() {
         return `${process.env.VUE_APP_API}/admin/article/imgUpload`;
-    }
+	}
+
+	@Watch('value')
+	watch_val(){
+		this.editor.txt.html(this.value)
+	}
 
     mounted() {
-		const editor = new E('#div1', '#edit_text');
+		const editor = new E(this.$refs.editor);
 		this.editor = editor
         editor.customConfig.onchangeTimeout = 1;
         editor.customConfig.uploadFileName = "file";
@@ -84,5 +87,6 @@ export default class extends Vue {
 #edit_text > div {
 	overflow: hidden !important;
 	background: rgb(243, 243, 243);
+	height: 500px;
 }
 </style>

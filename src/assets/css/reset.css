@@ -394,19 +394,19 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center;
     margin: 20px 0;
 }
-.businessItem ul li {
+.businessItem li {
 	display: flex;
 	align-items: center;
 	margin: 20px 0;
 }
-.businessItem ul li .w50{
+.businessItem li .w50{
 	width: auto;
 	display: flex;
 	align-items: center;
 	margin-right: 20px;
 }
 .businessItem span.text{
-	width: 100px;
+	width: 50px;
 	display: block;
 	font-weight: bold;
 }

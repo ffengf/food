@@ -1,7 +1,38 @@
 <template>
     <div>
         <div class="box">
+			<p>
+                <el-input
+                    v-model="filter.search"
+                    placeholder="输入店铺名称"
+                    prefix-icon="el-icon-search"
+                    size="medium"
+                ></el-input>
+            </p>
             <ul class="businessItem">
+				<li>
+					<span class="">分类:</span>
+					<el-select
+						v-model="filter.combo_category"
+						placeholder="请选择项目分类"
+						size="medium"
+					>
+						<el-option value label="全部"></el-option>
+						<el-option v-for="ele in combo_category_list" :key="ele.id" :value="ele.id" :label="ele.name"></el-option>
+					</el-select>
+				</li>
+				<li>
+					<span class="">商品状态:</span>
+					<el-select
+						v-model="filter.is_upper"
+						placeholder="请选择商品状态"
+						size="medium"
+					>
+						<el-option value label="全部"></el-option>
+						<el-option :value="1" label="已上架"></el-option>
+						<el-option :value="0" label="未上架"></el-option>
+					</el-select>
+				</li>
                 <li>
                     <el-button @click="find" type="primary" size="medium" icon="el-icon-search">查询</el-button>
                 </li>
@@ -90,7 +121,7 @@
 
 <script lang='ts'>
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { api_package, package_list, spu } from "@/views/shop/api";
+import { api_package,api_vclass,vclass, package_list, spu } from "@/views/shop/api";
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
 import { Id } from "@/types/global";
@@ -103,8 +134,12 @@ const Base = Mixin_list<package_list>(api_package.get_list);
 })
 export default class extends Base {
     filter = {
-        search: "",
-    };
+		search: "",
+		combo_category:"",
+		is_upper:""
+	};
+
+	combo_category_list:vclass[] = []
 
     async change_is_upper(id: Id[], is_upper: boolean) {
         await api_package.change_upper({ id, is_upper });
@@ -130,7 +165,16 @@ export default class extends Base {
 				this.$message.success('修改成功');
                 return this.get_list()
         }
-    }
+	}
+
+	async get_combo_category(){
+		const { results } = await api_vclass.get_list({})
+		this.combo_category_list = results
+	}
+
+	created(){
+		this.get_combo_category()
+	}
 }
 </script>
 

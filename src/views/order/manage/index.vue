@@ -1,8 +1,16 @@
 <template>
     <div>
         <div class="box">
+			<p>
+                <el-input
+                    v-model="filter.search"
+                    placeholder="输入订单号/用户名/手机号码"
+                    prefix-icon="el-icon-search"
+                    size="medium"
+                ></el-input>
+            </p>
             <ul class="businessItem">
-				<li class="flex">
+				<li>
 					<span class="">开始时间:</span>
 					<el-date-picker
 						v-model="filter.start"
@@ -26,7 +34,30 @@
 					></el-date-picker>
 				</li>
 				<li>
-
+					<span class="">支付状态:</span>
+					<el-select
+						v-model="filter.status"
+						placeholder="请选择项目分类"
+						size="medium"
+					>
+						<el-option value label="全部"></el-option>
+						<el-option :value="0" label="已取消"></el-option>
+						<el-option :value="1" label="待支付"></el-option>
+						<el-option :value="2" label="待消费"></el-option>
+						<el-option :value="4" label="待评价"></el-option>
+						<el-option :value="5" label="售后中"></el-option>
+						<el-option :value="6" label="完成"></el-option>
+					</el-select>
+					<span class="">商品类型:</span>
+					<el-select
+						v-model="filter.type"
+						placeholder="请选择项目分类"
+						size="medium"
+					>
+						<el-option value label="全部"></el-option>
+						<el-option :value="1" label="套餐"></el-option>
+						<el-option :value="2" label="普通菜品"></el-option>
+					</el-select>
 				</li>
                 <li>
                     <el-button @click="find" type="primary" size="medium" icon="el-icon-search">查询</el-button>
@@ -41,7 +72,7 @@
                 @selection-change="allSelect"
                 @sort-change="sort_change"
             >
-                <el-table-column label="序号" prop="order_id"></el-table-column>
+                <el-table-column label="订单号" prop="order_id"></el-table-column>
                 <el-table-column label="店铺名称" prop="food_store"></el-table-column>
                 <el-table-column label="商品类型" prop="order_classify">
                     <template slot-scope="scope">
@@ -120,7 +151,9 @@ export default class extends Base {
     filter = {
 		search: "",
 		start:"",
-		end:""
+		end:"",
+		status:"",
+		type:""
     };
 
     info: order_settle = {

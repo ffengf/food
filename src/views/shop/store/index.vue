@@ -1,6 +1,14 @@
 <template>
     <div>
         <div class="box">
+			<p>
+                <el-input
+                    v-model="filter.search"
+                    placeholder="输入店铺名称/手机号码"
+                    prefix-icon="el-icon-search"
+                    size="medium"
+                ></el-input>
+            </p>
             <ul class="businessItem">
                 <li>
                     <el-button @click="find" type="primary" size="medium" icon="el-icon-search">查询</el-button>

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="box">
+		菜品添加
+        <!-- <div class="box">
             <p>
                 <el-input
                     v-model="filter.search"
@@ -142,7 +143,7 @@
                 :page.sync="page"
                 :page_size.sync="page_size"
             />
-        </div>
+        </div> -->
     </div>
 </template>
 

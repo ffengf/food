@@ -65,11 +65,11 @@
                 <el-form-item label="套餐视频" prop="video">
                     <Upvideo v-model="info.video" />
                 </el-form-item>
+				<el-form-item label="套餐简介" prop="goods_desc">
+                    <el-input type="textarea" v-model="info.goods_desc"></el-input>
+                </el-form-item>
                 <el-form-item label="套餐内容" prop="combo_content">
                     <Editor v-model="info.combo_content" />
-                </el-form-item>
-				<el-form-item label="套餐简介" prop="goods_desc">
-                    <Editor v-model="info.goods_desc" />
                 </el-form-item>
             </el-form>
             <div class="submit">

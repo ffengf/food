@@ -52,8 +52,8 @@ export default class extends Vue {
         ],
     };
     info = {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
     };
     async submit() {
         await (this.$refs["form"] as ElForm | undefined)?.validate();

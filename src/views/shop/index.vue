@@ -11,6 +11,7 @@
             <el-menu-item index="/shop/vclass" v-if="root">套餐分类</el-menu-item>
             <el-menu-item index="/shop/package" v-if="root">套餐管理</el-menu-item>
             <el-menu-item index="/shop/class" v-if="admin">普通商品分类</el-menu-item>
+			<el-menu-item index="/shop/join" v-if="root">店铺入驻</el-menu-item>
             <!-- <el-menu-item index="/shop/remark">评论管理</el-menu-item> -->
         </el-menu>
         <div class="pd20">

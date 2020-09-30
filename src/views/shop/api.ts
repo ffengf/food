@@ -328,9 +328,57 @@ class HttpPackage extends Http_list<package_list> {
 	}
 }
 
+export enum apply_type{
+	美食类 = 1,
+	健康类 = 2,
+	休闲类 = 3,
+	教育类 = 4,
+	美丽类 = 5,
+}
+
+export enum join_status {
+	待审核 = 1,
+	审核通过 = 2,
+	审核失败 = 3,
+}
+
+export interface join_list {
+	id:Id
+	img:string[]
+	create_time:string
+	check_time:string
+	apply_type:apply_type
+	name:string
+	phone:string
+	store_name:string
+	store_area:string
+	city:string
+	address:string
+	vip_num:string
+	store_business:string
+	status:join_status
+}
+
+class HttpJoin extends Http_list<join_list> {
+	get_list = <T extends parmas>(parmas: T) => {
+		return this.get<join_list>(parmas)
+	}
+
+	get_info(id:Id){
+		return this.get_one(id)
+	}
+
+	set_status(info:{ id:Id,status:join_status }){
+		return this.put_one(info as any)
+	}
+}
+
+
+
 
 export const api_store = new HttpStore('/food_admin/stores/')
 export const api_goods = new HttpGoods('/food_admin/foods/')
 export const api_class = new HttpGoodsClass('/food_admin/food_category/')
 export const api_vclass = new HttpVClass('/food_admin/combo_category/')
 export const api_package = new HttpPackage('/food_admin/combo/')
+export const api_join = new HttpJoin('/food_admin/store_apply/')

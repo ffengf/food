@@ -219,11 +219,55 @@ const routes: RouteConfig[] = [
 						},
 						component: () => import('@/views/shop/remark/index.vue'),
 					},
+					{
+						path: 'join',
+						meta: {
+							title: '店铺入驻',
+							cache: false
+						},
+						component: Rview,
+						children:[
+							{
+								path:'',
+								meta: {
+									title: '店铺入驻列表',
+									cache: false
+								},
+								component: () => import('@/views/shop/join/index.vue')
+							},
+							{
+								path:'info/:id',
+								meta: {
+									title: '店铺入驻详情',
+									cache: false
+								},
+								component: () => import('@/views/shop/join/info/index.vue')
+							}
+						]
+					},
 				]
-			}
+			},
+			{
+				path: 'set',
+				meta: {
+					title: '设置',
+					cache: false
+				},
+				redirect: '/set/default',
+				component: () => import('@/views/set/index.vue'),
+				children: [
+					{
+						path:'default',
+						meta: {
+							title: '后台设置',
+							cache: false
+						},
+						component: () => import('@/views/set/default/index.vue'),
+					}
+				]
+			},
 		]
 	},
-
 ];
 
 const router = new VueRouter({

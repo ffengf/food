@@ -342,6 +342,11 @@ export enum join_status {
 	审核失败 = 3,
 }
 
+export enum store_type {
+	代言店铺 = 0,
+	合伙店铺 = 1,
+}
+
 export interface join_list {
 	id:Id
 	img:string[]
@@ -357,6 +362,7 @@ export interface join_list {
 	vip_num:string
 	store_business:string
 	status:join_status
+	store_type:store_type
 }
 
 class HttpJoin extends Http_list<join_list> {

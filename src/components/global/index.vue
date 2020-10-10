@@ -116,7 +116,8 @@ export default class extends Vue {
                 }
             }
             .main {
-                background: rgb(233, 238, 248);
+				background: rgb(233, 238, 248);
+				overflow: hidden;
             }
         }
     }

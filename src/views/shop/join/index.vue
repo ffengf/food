@@ -33,6 +33,11 @@
                         <span>{{ join_status(scope.row.status) }}</span>
                     </template>
 				</el-table-column>
+				<el-table-column label="入驻类型" prop="store_type">
+					<template slot-scope="scope">
+                        <span>{{ store_type(scope.row.store_type) }}</span>
+                    </template>
+				</el-table-column>
                 <el-table-column label="操作" width="255" fixed="right">
                     <template slot-scope="scope">
 						<!-- <el-button size="mini" @click="get_info(scope.row.id)" type="success">
@@ -56,7 +61,7 @@
 
 <script lang='ts'>
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { api_join, apply_type, join_list, join_status } from "@/views/shop/api";
+import { api_join, apply_type, join_list, join_status,store_type } from "@/views/shop/api";
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
 import { Id, isCreate } from "@/types/global";
@@ -79,6 +84,10 @@ export default class extends Base {
 
 	join_status(e:join_status){
 		return join_status[e]
+	}
+
+	store_type(e:store_type){
+		return store_type[e]
 	}
 
 	get_info(id:Id){

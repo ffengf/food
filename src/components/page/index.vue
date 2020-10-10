@@ -2,6 +2,7 @@
     <div class="pagin">
         <el-pagination
             @size-change="sizeChange"
+			:current-page.sync="page"
             @current-change="currentChange"
             :page-sizes="[10, 20, 50, 100]"
             :page-size="page_size"

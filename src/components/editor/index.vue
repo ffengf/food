@@ -1,7 +1,7 @@
 
 <template>
     <div id="wangeditor">
-        <div ref="editor" style="text-align: left;"></div>
+        <div class="editor" ref="editor" style="text-align: left;"></div>
     </div>
 </template>
 
@@ -83,10 +83,14 @@ export default class extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
+#wangeditor{
+	max-width: 85vw;
+}
 #edit_text > div {
 	overflow: hidden !important;
 	background: rgb(243, 243, 243);
 	height: 500px;
+
 }
 </style>

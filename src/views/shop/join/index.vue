@@ -19,23 +19,29 @@
                 <el-table-column label="姓名" prop="name"></el-table-column>
                 <el-table-column label="联系方式" prop="phone"></el-table-column>
                 <el-table-column label="店铺名称" prop="store_name"></el-table-column>
-				<!-- <el-table-column label="审核时间" prop="check_time"></el-table-column> -->
+				<el-table-column label="审核时间" prop="check_time"></el-table-column>
                 <el-table-column label="申请时间" prop="create_time"></el-table-column>
 				<el-table-column label="城市" prop="city"></el-table-column>
                 <el-table-column label="会员数量" prop="vip_num"></el-table-column>
+				<el-table-column label="店铺营业额" prop="store_business"></el-table-column>
+				<el-table-column label="店铺图片" prop="img">
+					<template slot-scope="scope">
+						<ShowImg :list="scope.row.img" />
+                    </template>
+				</el-table-column>
 				<el-table-column label="申请类型" prop="apply_type">
 					<template slot-scope="scope">
                         <span>{{ apply_type(scope.row.apply_type) }}</span>
                     </template>
 				</el-table-column>
-				<el-table-column label="认证状态" prop="status">
-					<template slot-scope="scope">
-                        <span>{{ join_status(scope.row.status) }}</span>
-                    </template>
-				</el-table-column>
 				<el-table-column label="入驻类型" prop="store_type">
 					<template slot-scope="scope">
                         <span>{{ store_type(scope.row.store_type) }}</span>
+                    </template>
+				</el-table-column>
+				<el-table-column label="认证状态" prop="status">
+					<template slot-scope="scope">
+                        <span>{{ join_status(scope.row.status) }}</span>
                     </template>
 				</el-table-column>
                 <el-table-column label="操作" width="255" fixed="right">
@@ -64,13 +70,15 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { api_join, apply_type, join_list, join_status,store_type } from "@/views/shop/api";
 import { Mixin_list } from "@/mixin";
 import Page from "@/components/page/index.vue";
+import ShowImg from "@/components/showimg/index.vue"
 import { Id, isCreate } from "@/types/global";
 import { ElForm } from 'element-ui/types/form';
 const Base = Mixin_list<join_list>(api_join.get_list);
 
 @Component({
     components: {
-        Page,
+		Page,
+		ShowImg
     },
 })
 export default class extends Base {

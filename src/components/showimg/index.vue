@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="showKey = true" class="warpper" v-if="list.length !== 1">
+        <div @click="showKey = true" class="warpper" v-if="list.length !== 0">
             <img :src="list[0]" />
             <span>{{ list.length }}张图片</span>
         </div>
